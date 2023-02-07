@@ -10,15 +10,15 @@ using namespace std;
 
 void XFtpLIST::Write(struct bufferevent *bev)
 {
-	//4 226 Transfer complete·¢ËÍÍê³É
+	//4 226 Transfer completeå‘é€å®Œæˆ
 	ResCMD("226 Transfer complete\r\n");
-	//5 ¹Ø±ÕÁ¬½Ó
+	//5 å…³é—­è¿æ¥
 	Close();
 
 }
 void XFtpLIST::Event(struct bufferevent *bev, short what)
 {
-	//Èç¹û¶Ô·½ÍøÂç¶Ïµô£¬»òÕß»úÆ÷ËÀ»úÓĞ¿ÉÄÜÊÕ²»µ½BEV_EVENT_EOFÊı¾İ
+	//å¦‚æœå¯¹æ–¹ç½‘ç»œæ–­æ‰ï¼Œæˆ–è€…æœºå™¨æ­»æœºæœ‰å¯èƒ½æ”¶ä¸åˆ°BEV_EVENT_EOFæ•°æ®
 	if (what & (BEV_EVENT_EOF | BEV_EVENT_ERROR | BEV_EVENT_TIMEOUT))
 	{
 		cout << "BEV_EVENT_EOF | BEV_EVENT_ERROR |BEV_EVENT_TIMEOUT" << endl;
@@ -29,7 +29,7 @@ void XFtpLIST::Event(struct bufferevent *bev, short what)
 		cout << "XFtpLIST BEV_EVENT_CONNECTED" << endl;
 	}
 }
-//½âÎöĞ­Òé
+//è§£æåè®®
 void XFtpLIST::Parse(std::string type, std::string msg)
 {
 	string resmsg = "";
@@ -45,26 +45,26 @@ void XFtpLIST::Parse(std::string type, std::string msg)
 	}
 	else if (type == "LIST")
 	{
-		//1Á¬½ÓÊı¾İÍ¨µÀ 2 150 3 ·¢ËÍÄ¿Â¼Êı¾İÍ¨µÀ 4 ·¢ËÍÍê³É226 5 ¹Ø±ÕÁ¬½Ó
-		//ÃüÁîÍ¨µÀ»Ø¸´ÏûÏ¢ Ê¹ÓÃÊı¾İÍ¨µÀ·¢ËÍÄ¿Â¼
+		//1è¿æ¥æ•°æ®é€šé“ 2 150 3 å‘é€ç›®å½•æ•°æ®é€šé“ 4 å‘é€å®Œæˆ226 5 å…³é—­è¿æ¥
+		//å‘½ä»¤é€šé“å›å¤æ¶ˆæ¯ ä½¿ç”¨æ•°æ®é€šé“å‘é€ç›®å½•
 		//-rwxrwxrwx 1 root group 64463 Mar 14 09:53 101.jpg\r\n
-		//1 Á¬½ÓÊı¾İÍ¨µÀ 
+		//1 è¿æ¥æ•°æ®é€šé“ 
 		ConnectPORT();
 		//2 1502 150
 		ResCMD("150 Here comes the directory listing.\r\n");
 		//string listdata = "-rwxrwxrwx 1 root group 64463 Mar 14 09:53 101.jpg\r\n";
 		string listdata = GetListData(cmdTask->rootDir + cmdTask->curDir);
-		//3 Êı¾İÍ¨µÀ·¢ËÍ
+		//3 æ•°æ®é€šé“å‘é€
 		Send(listdata);
 	}
-	else if (type == "CWD") //ÇĞ»»Ä¿Â¼
+	else if (type == "CWD") //åˆ‡æ¢ç›®å½•
 	{
-		//È¡³öÃüÁîÖĞµÄÂ·¾¶
+		//å–å‡ºå‘½ä»¤ä¸­çš„è·¯å¾„
 		//CWD test\r\n
 		int pos = msg.rfind(" ") + 1;
-		//È¥µô½áÎ²µÄ\r\n
+		//å»æ‰ç»“å°¾çš„\r\n
 		string path = msg.substr(pos, msg.size() - pos - 2);
-		if (path[0] == '/') //¾Ö¶ÔÂ·¾¶
+		if (path[0] == '/') //å±€å¯¹è·¯å¾„
 		{
 			cmdTask->curDir = path;
 		}
@@ -79,11 +79,11 @@ void XFtpLIST::Parse(std::string type, std::string msg)
 
 		//cmdTask->curDir += 
 	}
-	else if (type == "CDUP") //»Øµ½ÉÏ²ãÄ¿Â¼
+	else if (type == "CDUP") //å›åˆ°ä¸Šå±‚ç›®å½•
 	{
 		//  /Debug/test_ser.A3C61E95.tlog /Debug   /Debug/
 		string path = cmdTask->curDir;
-		//Í³Ò»È¥µô½áÎ²µÄ /
+		//ç»Ÿä¸€å»æ‰ç»“å°¾çš„ /
 		////  /Debug/test_ser.A3C61E95.tlog /Debug  
 		if (path[path.size() - 1] == '/')
 		{
@@ -101,9 +101,9 @@ std::string XFtpLIST::GetListData(std::string path)
 	string data = "";
 
 #ifdef _WIN32
-	//´æ´¢ÎÄ¼şĞÅÏ¢
+	//å­˜å‚¨æ–‡ä»¶ä¿¡æ¯
 	_finddata_t file; 
-	//Ä¿Â¼ÉÏÏÂÎÄ
+	//ç›®å½•ä¸Šä¸‹æ–‡
 	path += "/*.*";
 	intptr_t dir =_findfirst(path.c_str(),&file);
 	if (dir < 0)
@@ -111,7 +111,7 @@ std::string XFtpLIST::GetListData(std::string path)
 	do
 	{
 		string tmp = "";
-		//ÊÇ·ñÊÇÄ¿Â¼È¥µô . ..
+		//æ˜¯å¦æ˜¯ç›®å½•å»æ‰ . ..
 		if (file.attrib &_A_SUBDIR)
 		{
 			if (strcmp(file.name, ".") == 0 || strcmp(file.name, "..") == 0)
@@ -124,13 +124,13 @@ std::string XFtpLIST::GetListData(std::string path)
 		{
 			tmp = "-rwxrwxrwx 1 root group ";
 		}
-		//ÎÄ¼ş´óĞ¡
+		//æ–‡ä»¶å¤§å°
 		char buf[1024];
 		//_CRT_SECURE_NO_WARNINGS
 		sprintf(buf, "%u ", file.size);
 		tmp += buf;
 
-		//ÈÕÆÚÊ±¼ä
+		//æ—¥æœŸæ—¶é—´
 		strftime(buf, sizeof(buf) - 1, "%b %d %H:%M ", localtime(&file.time_write));
 		tmp += buf;
 		tmp += file.name;

@@ -5,7 +5,7 @@ public:
 	struct event_base *base = 0;
 	int sock = 0;
 	int thread_id = 0;
-	//³õÊ¼»¯ÈÎÎñ
+	//åˆå§‹åŒ–ä»»åŠ¡
 	virtual bool Init() = 0;
 };
 

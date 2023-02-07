@@ -8,24 +8,24 @@ public:
 	std::string curDir = "/";
 	std::string rootDir = ".";
 
-	//PORT Êı¾İÍ¨µÀµÄIPºÍ¶Ë¿Ú
+	//PORT æ•°æ®é€šé“çš„IPå’Œç«¯å£
 	std::string ip = "";
 	int port = 0;
 	
-	//ÃüÁîÍ¨µÀ
+	//å‘½ä»¤é€šé“
 	XFtpTask *cmdTask = 0;
 
-	//½âÎöĞ­Òé
+	//è§£æåè®®
 	virtual void Parse(std::string type, std::string msg) {}
-	//»Ø¸´cmdÏûÏ¢
+	//å›å¤cmdæ¶ˆæ¯
 	void ResCMD(std::string msg);
 
 
-	//ÓÃÀ´·¢ËÍ½¨Á¢ÁËÁ¬½ÓµÄÊı¾İÍ¨µÀ
+	//ç”¨æ¥å‘é€å»ºç«‹äº†è¿æ¥çš„æ•°æ®é€šé“
 	void Send(std::string data);
 	void Send(const char*data,int datasize);
 
-	//Á¬½ÓÊı¾İÍ¨µÀ
+	//è¿æ¥æ•°æ®é€šé“
 	void ConnectPORT();
 	void Close();
 	virtual void Read(struct bufferevent *bev) {}
@@ -37,7 +37,7 @@ protected:
 	static void ReadCB(bufferevent * bev, void *arg);
 	static void WriteCB(bufferevent * bev, void *arg);
 	static void EventCB(struct bufferevent *bev, short what, void *arg);
-	//ÃüÁîbev
+	//å‘½ä»¤bev
 	struct bufferevent *bev = 0;
 	FILE *fp = 0;
 

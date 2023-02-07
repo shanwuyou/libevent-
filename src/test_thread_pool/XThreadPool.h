@@ -5,22 +5,22 @@ class XTask;
 class XThreadPool
 {
 public:
-	//µ¥¼şÄ£Ê½
+	//å•ä»¶æ¨¡å¼
 	static XThreadPool* Get()
 	{
 		static XThreadPool p;
 		return &p;
 	}
-	//³õÊ¼»¯ËùÓĞÏß³Ì²¢Æô¶¯Ïß³Ì
+	//åˆå§‹åŒ–æ‰€æœ‰çº¿ç¨‹å¹¶å¯åŠ¨çº¿ç¨‹
 	void Init(int threadCount);
 
-	//·Ö·¢Ïß³Ì
+	//åˆ†å‘çº¿ç¨‹
 	void Dispatch(XTask *task);
 private:
-	//Ïß³ÌÊıÁ¿
+	//çº¿ç¨‹æ•°é‡
 	int threadCount = 0;
 	int lastThread = -1;
-	//Ïß³Ì³ØÏß³Ì
+	//çº¿ç¨‹æ± çº¿ç¨‹
 	std::vector<XThread *>threads;
 	XThreadPool() {};
 

@@ -26,7 +26,7 @@ void XFtpTask::Close()
 		fp = 0;
 	}
 }
-//Á¬½ÓÊı¾İÍ¨µÀ
+//è¿æ¥æ•°æ®é€šé“
 void XFtpTask::ConnectPORT()
 {
 	if (ip.empty() || port <= 0 || !base)
@@ -41,14 +41,14 @@ void XFtpTask::ConnectPORT()
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(port);
 	evutil_inet_pton(AF_INET, ip.c_str(), &sin.sin_addr.s_addr);
-	//ÉèÖÃ»Øµ÷ºÍÈ¨ÏŞ
+	//è®¾ç½®å›è°ƒå’Œæƒé™
 	SetCallback(bev);
-	//Ìí¼Ó³¬Ê± 
+	//æ·»åŠ è¶…æ—¶ 
 	timeval rt = { 60,0 };
 	bufferevent_set_timeouts(bev, &rt, 0);
 	bufferevent_socket_connect(bev, (sockaddr*)&sin, sizeof(sin));
 }
-//»Ø¸´cmdÏûÏ¢
+//å›å¤cmdæ¶ˆæ¯
 void XFtpTask::ResCMD(string msg)
 {
 	if (!cmdTask || !cmdTask->bev)return;

@@ -1,11 +1,11 @@
 #pragma once
 #include "XFtpTask.h"
 
-//上传文件
+//涓婁紶鏂囦欢
 class XFtpSTOR :public XFtpTask
 {
 public:
-	//解析协议
+	//瑙ｆ瀽鍗忚
 	virtual void Parse(std::string type, std::string msg);
 	virtual void Read(struct bufferevent *bev);
 	virtual void Event(struct bufferevent *bev, short what);

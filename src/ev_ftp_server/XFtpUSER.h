@@ -3,9 +3,8 @@
 class XFtpUSER : public XFtpTask
 {
 public:
-	//½âÎöĞ­Òé
+	//è§£æåè®®
 	virtual void Parse(std::string type, std::string msg);
 	XFtpUSER();
 	~XFtpUSER();
 };
-

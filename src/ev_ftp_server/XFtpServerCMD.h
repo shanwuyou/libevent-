@@ -4,19 +4,19 @@
 class XFtpServerCMD :public XFtpTask
 {
 public:
-	//³õÊ¼»¯ÈÎÎñ
+	//åˆå§‹åŒ–ä»»åŠ¡
 	virtual bool Init();
 	virtual void Read(struct bufferevent *bev);
 	virtual void Event(struct bufferevent *bev, short what);
-	//×¢²áÃüÁî´¦Àí¶ÔÏó ²»ĞèÒª¿¼ÂÇÏß³Ì°²È«£¬µ÷ÓÃÊ±»¹Î´·Ö·¢µ½Ïß³Ì
+	//æ³¨å†Œå‘½ä»¤å¤„ç†å¯¹è±¡ ä¸éœ€è¦è€ƒè™‘çº¿ç¨‹å®‰å…¨ï¼Œè°ƒç”¨æ—¶è¿˜æœªåˆ†å‘åˆ°çº¿ç¨‹
 	void Reg(std::string, XFtpTask *call);
 
 	XFtpServerCMD();
 	~XFtpServerCMD();
 private:
-	//×¢²áµÄ´¦Àí¶ÔÏó
+	//æ³¨å†Œçš„å¤„ç†å¯¹è±¡
 	std::map<std::string, XFtpTask*>calls;
-	//ÓÃÀ´×ö¿Õ¼äÇåÀí
+	//ç”¨æ¥åšç©ºé—´æ¸…ç†
 	std::map< XFtpTask*, int>calls_del;
 };
 

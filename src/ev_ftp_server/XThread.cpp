@@ -10,7 +10,7 @@
 
 using namespace std;
 
-//¼¤»îÏß³ÌÈÎÎñµÄ»Øµ÷º¯Êı
+//æ¿€æ´»çº¿ç¨‹ä»»åŠ¡çš„å›è°ƒå‡½æ•°
 static void NotifyCB(evutil_socket_t fd, short which, void *arg)
 {
 	XThread *t = (XThread *)arg;
@@ -18,26 +18,26 @@ static void NotifyCB(evutil_socket_t fd, short which, void *arg)
 }
 void XThread::Notify(evutil_socket_t fd, short which)
 {
-	//Ë®Æ½´¥·¢ Ö»ÒªÃ»ÓĞ½ÓÊÜÍê³É£¬»áÔÙ´Î½øÀ´
+	//æ°´å¹³è§¦å‘ åªè¦æ²¡æœ‰æ¥å—å®Œæˆï¼Œä¼šå†æ¬¡è¿›æ¥
 	char buf[2] = { 0 };
 #ifdef _WIN32
 	int re = recv(fd, buf, 1, 0);
 #else
-	//linuxÖĞÊÇ¹ÜµÀ£¬²»ÄÜÓÃrecv
+	//linuxä¸­æ˜¯ç®¡é“ï¼Œä¸èƒ½ç”¨recv
 	int re = read(fd, buf, 1);
 #endif
 	if (re <= 0)
 		return;
 	cout << id << " thread " << buf << endl;
 	XTask *task = NULL;
-	//»ñÈ¡ÈÎÎñ£¬²¢³õÊ¼»¯ÈÎÎñ
+	//è·å–ä»»åŠ¡ï¼Œå¹¶åˆå§‹åŒ–ä»»åŠ¡
 	tasks_mutex.lock();
 	if (tasks.empty())
 	{
 		tasks_mutex.unlock();
 		return;
 	}
-	task = tasks.front(); //ÏÈ½øÏÈ³ö
+	task = tasks.front(); //å…ˆè¿›å…ˆå‡º
 	tasks.pop_front();
 	tasks_mutex.unlock();
 	task->Init();
@@ -51,7 +51,7 @@ void XThread::AddTask(XTask *t)
 	tasks.push_back(t);
 	tasks_mutex.unlock();
 }
-//Ïß³Ì¼¤»î
+//çº¿ç¨‹æ¿€æ´»
 void XThread::Activate()
 {
 #ifdef _WIN32
@@ -64,33 +64,33 @@ void XThread::Activate()
 		cerr << "XThread::Activate() failed!" << endl;
 	}
 }
-//Æô¶¯Ïß³Ì
+//å¯åŠ¨çº¿ç¨‹
 void XThread::Start()
 {
 	Setup();
-	//Æô¶¯Ïß³Ì
+	//å¯åŠ¨çº¿ç¨‹
 	thread th(&XThread::Main,this);
 
-	//¶Ï¿ªÓëÖ÷Ïß³ÌÁªÏµ
+	//æ–­å¼€ä¸ä¸»çº¿ç¨‹è”ç³»
 	th.detach();
 }
-//°²×°Ïß³Ì£¬³õÊ¼»¯event_baseºÍ¹ÜµÀ¼àÌıÊÂ¼şÓÃÓÚ¼¤»î
+//å®‰è£…çº¿ç¨‹ï¼Œåˆå§‹åŒ–event_baseå’Œç®¡é“ç›‘å¬äº‹ä»¶ç”¨äºæ¿€æ´»
 bool XThread::Setup()
 {
-	//windowsÓÃÅä¶Ôsocket linuxÓÃ¹ÜµÀ
+	//windowsç”¨é…å¯¹socket linuxç”¨ç®¡é“
 #ifdef _WIN32
-	//´´½¨Ò»¸ösocketpair ¿ÉÒÔ»¥ÏàÍ¨ĞÅ fds[0] ¶Á fds[1]Ğ´ 
+	//åˆ›å»ºä¸€ä¸ªsocketpair å¯ä»¥äº’ç›¸é€šä¿¡ fds[0] è¯» fds[1]å†™ 
 	evutil_socket_t fds[2];
 	if (evutil_socketpair(AF_INET, SOCK_STREAM, 0, fds) < 0)
 	{
 		cout << "evutil_socketpair failed!" << endl;
 		return false;
 	}
-	//ÉèÖÃ³É·Ç×èÈû
+	//è®¾ç½®æˆéé˜»å¡
 	evutil_make_socket_nonblocking(fds[0]);
 	evutil_make_socket_nonblocking(fds[1]);
 #else
-	//´´½¨µÄ¹ÜµÀ ²»ÄÜÓÃsend recv¶ÁÈ¡ read write
+	//åˆ›å»ºçš„ç®¡é“ ä¸èƒ½ç”¨send recvè¯»å– read write
 	int fds[2];
 	if (pipe(fds))
 	{
@@ -99,10 +99,10 @@ bool XThread::Setup()
 	}
 #endif
 
-	//¶ÁÈ¡°ó¶¨µ½eventÊÂ¼şÖĞ£¬Ğ´ÈëÒª±£´æ
+	//è¯»å–ç»‘å®šåˆ°eventäº‹ä»¶ä¸­ï¼Œå†™å…¥è¦ä¿å­˜
 	notify_send_fd = fds[1];
 
-	//´´½¨libeventÉÏÏÂÎÄ£¨ÎŞËø£©
+	//åˆ›å»ºlibeventä¸Šä¸‹æ–‡ï¼ˆæ— é”ï¼‰
 	event_config *ev_conf = event_config_new();
 	event_config_set_flag(ev_conf, EVENT_BASE_FLAG_NOLOCK);
 	this->base = event_base_new_with_config(ev_conf);
@@ -113,13 +113,13 @@ bool XThread::Setup()
 		return false;
 	}
 
-	//Ìí¼Ó¹ÜµÀ¼àÌıÊÂ¼ş£¬ÓÃÓÚ¼¤»îÏß³ÌÖ´ĞĞÈÎÎñ
+	//æ·»åŠ ç®¡é“ç›‘å¬äº‹ä»¶ï¼Œç”¨äºæ¿€æ´»çº¿ç¨‹æ‰§è¡Œä»»åŠ¡
 	event *ev = event_new(base, fds[0], EV_READ | EV_PERSIST, NotifyCB, this);
 	event_add(ev, 0);
 
 	return true;
 }
-//Ïß³ÌÈë¿Úº¯Êı
+//çº¿ç¨‹å…¥å£å‡½æ•°
 void XThread::Main()
 {
 	cout << id << " XThread::Main() begin" << endl;

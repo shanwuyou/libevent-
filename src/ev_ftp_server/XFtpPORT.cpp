@@ -8,8 +8,8 @@ void XFtpPORT::Parse(std::string type, std::string msg)
 	//PORT n1,n2,n3,n4,n5,n6\r\n
 	//port = n5*256 + n6
 
-	//Ö»»ñÈ¡ipºÍ¶Ë¿Ú£¬²»Á¬½Ó
-	//È¡³öip
+	//åªè·å–ipå’Œç«¯å£ï¼Œä¸è¿æ¥
+	//å–å‡ºip
 	vector<string> vals;
 	string tmp = "";
 	for (int i = 5; i < msg.size(); i++)
@@ -24,7 +24,7 @@ void XFtpPORT::Parse(std::string type, std::string msg)
 	}
 	if (vals.size() != 6)
 	{
-		//PORT¸ñÊ½ÓĞÎó
+		//PORTæ ¼å¼æœ‰è¯¯
 		ResCMD("501 Syntax error in parameters or arguments.");
 		return;
 	}

@@ -3,7 +3,7 @@
 class XFtpServerCMD :public XTask
 {
 public:
-	//³õÊ¼»¯ÈÎÎñ
+	//åˆå§‹åŒ–ä»»åŠ¡
 	virtual bool Init();
 	XFtpServerCMD();
 	~XFtpServerCMD();

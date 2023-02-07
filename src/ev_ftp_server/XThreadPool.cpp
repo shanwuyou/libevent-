@@ -5,10 +5,10 @@
 #include "XTask.h"
 using namespace std;
 
-//·Ö·¢Ïß³Ì
+//åˆ†å‘çº¿ç¨‹
 void XThreadPool::Dispatch(XTask *task)
 {
-	//ÂÖÑ¯
+	//è½®è¯¢
 	if (!task)return;
 	int tid = (lastThread + 1) % threadCount;
 	lastThread = tid;
@@ -16,12 +16,12 @@ void XThreadPool::Dispatch(XTask *task)
 
 	t->AddTask(task);
 
-	//¼¤»îÏß³Ì
+	//æ¿€æ´»çº¿ç¨‹
 	t->Activate();
 
 
 }
-//³õÊ¼»¯ËùÓÐÏß³Ì²¢Æô¶¯Ïß³Ì
+//åˆå§‹åŒ–æ‰€æœ‰çº¿ç¨‹å¹¶å¯åŠ¨çº¿ç¨‹
 void XThreadPool::Init(int threadCount)
 {
 	this->threadCount = threadCount;
@@ -31,7 +31,7 @@ void XThreadPool::Init(int threadCount)
 		XThread *t = new XThread();
 		t->id = i + 1;
 		cout << "Create thread " << i << endl;
-		//Æô¶¯Ïß³Ì
+		//å¯åŠ¨çº¿ç¨‹
 		t->Start();
 		threads.push_back(t);
 		this_thread::sleep_for(10ms);

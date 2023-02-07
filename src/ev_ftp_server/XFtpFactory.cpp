@@ -9,7 +9,7 @@ XTask *XFtpFactory::CreateTask()
 {
 	XFtpServerCMD *x = new XFtpServerCMD();
 
-	//注册ftp消息处理对象
+	//娉ㄥ唽ftp娑堟伅澶勭悊瀵硅薄
 	x->Reg("USER", new XFtpUSER());
 	XFtpLIST * list = new XFtpLIST();
 	x->Reg("PWD", list);

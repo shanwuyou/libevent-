@@ -5,7 +5,7 @@
 #include <string.h>
 #include <string>
 using namespace std;
-//×¢²áÃüÁî´¦Àí¶ÔÏó ²»ĞèÒª¿¼ÂÇÏß³Ì°²È«£¬µ÷ÓÃÊ±»¹Î´·Ö·¢µ½Ïß³Ì
+//æ³¨å†Œå‘½ä»¤å¤„ç†å¯¹è±¡ ä¸éœ€è¦è€ƒè™‘çº¿ç¨‹å®‰å…¨ï¼Œè°ƒç”¨æ—¶è¿˜æœªåˆ†å‘åˆ°çº¿ç¨‹
 void XFtpServerCMD::Reg(std::string cmd, XFtpTask *call)
 {
 	if (!call)
@@ -18,17 +18,17 @@ void XFtpServerCMD::Reg(std::string cmd, XFtpTask *call)
 		cout << "XFtpServerCMD::Reg cmd is null " << endl;
 		return;
 	}
-	//ÒÑ¾­×¢²áµÄÊÇ·ñ¸²¸Ç ²»¸²¸Ç£¬ÌáÊ¾´íÎó
+	//å·²ç»æ³¨å†Œçš„æ˜¯å¦è¦†ç›– ä¸è¦†ç›–ï¼Œæç¤ºé”™è¯¯
 	if (calls.find(cmd) != calls.end())
 	{
 		cout << cmd << " is alreay register" << endl;
 		return;
 	}
 	calls[cmd] = call;
-	//ÓÃÀ´×ö¿Õ¼äÇåÀí
+	//ç”¨æ¥åšç©ºé—´æ¸…ç†
 	calls_del[call] = 0;
 }
-//×ÓÏß³ÌXThread  eventÊÂ¼ş·Ö·¢
+//å­çº¿ç¨‹XThread  eventäº‹ä»¶åˆ†å‘
 void XFtpServerCMD::Read(struct bufferevent *bev)
 {
 	char data[1024] = { 0 };
@@ -38,8 +38,8 @@ void XFtpServerCMD::Read(struct bufferevent *bev)
 		if (len <= 0)break;
 		data[len] = '\0';
 		cout << "Recv CMD:"<<data << flush;
-		//·Ö·¢µ½´¦Àí¶ÔÏó
-		//·ÖÎö³öÀàĞÍ USER anonymous
+		//åˆ†å‘åˆ°å¤„ç†å¯¹è±¡
+		//åˆ†æå‡ºç±»å‹ USER anonymous
 		string type = "";
 		for (int i = 0; i < len; i++)
 		{
@@ -51,7 +51,7 @@ void XFtpServerCMD::Read(struct bufferevent *bev)
 		if (calls.find(type) != calls.end())
 		{
 			XFtpTask *t = calls[type];
-			t->cmdTask = this; //ÓÃÀ´´¦Àí»Ø¸´ÃüÁîºÍÄ¿Â¼
+			t->cmdTask = this; //ç”¨æ¥å¤„ç†å›å¤å‘½ä»¤å’Œç›®å½•
 			t->ip = ip;
 			t->port = port;
 			t->base = base;
@@ -72,18 +72,18 @@ void XFtpServerCMD::Read(struct bufferevent *bev)
 }
 void XFtpServerCMD::Event(struct bufferevent *bev, short what)
 {
-	//Èç¹û¶Ô·½ÍøÂç¶Ïµô£¬»òÕß»úÆ÷ËÀ»úÓĞ¿ÉÄÜÊÕ²»µ½BEV_EVENT_EOFÊı¾İ
+	//å¦‚æœå¯¹æ–¹ç½‘ç»œæ–­æ‰ï¼Œæˆ–è€…æœºå™¨æ­»æœºæœ‰å¯èƒ½æ”¶ä¸åˆ°BEV_EVENT_EOFæ•°æ®
 	if (what & (BEV_EVENT_EOF | BEV_EVENT_ERROR | BEV_EVENT_TIMEOUT))
 	{
 		cout << "BEV_EVENT_EOF | BEV_EVENT_ERROR |BEV_EVENT_TIMEOUT" << endl;
 		delete this;
 	}
 }
-//³õÊ¼»¯ÈÎÎñ ÔËĞĞÔÚ×ÓÏß³ÌÖĞ
+//åˆå§‹åŒ–ä»»åŠ¡ è¿è¡Œåœ¨å­çº¿ç¨‹ä¸­
 bool XFtpServerCMD::Init()
 {
 	cout << "XFtpServerCMD::Init()" << endl;
-	//¼àÌısocket bufferevent
+	//ç›‘å¬socket bufferevent
 	// base socket
 	bufferevent * bev = bufferevent_socket_new(base, sock, BEV_OPT_CLOSE_ON_FREE);
 	if (!bev)
@@ -94,7 +94,7 @@ bool XFtpServerCMD::Init()
 	this->bev = bev;
 	this->SetCallback(bev);
 
-	//Ìí¼Ó³¬Ê± 
+	//æ·»åŠ è¶…æ—¶ 
 	timeval rt = {60,0};
 	bufferevent_set_timeouts(bev, &rt, 0);
 	string msg = "220 Welcome to libevent XFtpServer\r\n";

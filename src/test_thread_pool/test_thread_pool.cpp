@@ -30,10 +30,6 @@ int main()
 	//1 初始化线程池
 	XThreadPool::Get()->Init(10);
 
-
-
-
-
     std::cout << "test thread pool!\n"; 
 	//创建libevent的上下文
 	event_base * base = event_base_new();
